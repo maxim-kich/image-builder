@@ -1,0 +1,30 @@
+# Keep local state, credentials, tooling, and host dependencies out of builds.
+.git
+.codex
+graphify-out
+.nimbalyst
+node_modules
+data
+USER_UPLOADS
+outputs
+work
+coverage
+dist
+dist-server
+.env
+.env.*
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+*.tsbuildinfo
+.DS_Store
+
+# Retired local template and unused local QA artwork
+/templates/
+/tests/fixtures/portrait.svg

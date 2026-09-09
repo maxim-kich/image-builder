@@ -1,0 +1,42 @@
+services:
+  image-builder:
+    build: .
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=512m,mode=1777
+    shm_size: 128m
+    pids_limit: 256
+    expose:
+      - "8080"
+    environment:
+      IMAGE_BUILDER_API_TOKEN: "${IMAGE_BUILDER_API_TOKEN:?Set a long random access token}"
+      IMAGE_BUILDER_PUBLIC_URL: "${IMAGE_BUILDER_PUBLIC_URL:?Set the public HTTPS URL}"
+      DATABASE_URL: "postgresql://image_builder:${POSTGRES_PASSWORD:?Set a database password}@postgres:5432/image_builder"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 1g
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: image_builder
+      POSTGRES_USER: image_builder
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set a database password}"
+    volumes:
+      - image_builder_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U image_builder -d image_builder"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  image_builder_postgres:

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script id="image-builder-manifest" type="application/json">
+      {
+        "version": 2,
+        "name": "Continuous carousel starter",
+        "description": "One wide canvas with artwork that crosses four exported square segments.",
+        "width": 1080,
+        "height": 1080,
+        "carousel": {
+          "mode": "continuous",
+          "direction": "horizontal",
+          "segments": [
+            { "id": "cover", "name": "Cover" },
+            { "id": "story", "name": "Story" },
+            { "id": "proof", "name": "Proof" },
+            { "id": "finish", "name": "Finish" }
+          ],
+          "showGuides": true
+        },
+        "controls": [
+          {
+            "key": "brand",
+            "label": "Brand",
+            "type": "text",
+            "scope": "template",
+            "default": "IMAGE BUILDER"
+          },
+          {
+            "key": "headline",
+            "label": "Headline",
+            "type": "text",
+            "scope": "template",
+            "default": "One idea. One continuous story."
+          },
+          {
+            "key": "detail",
+            "label": "Detail",
+            "type": "text",
+            "scope": "template",
+            "default": "Elements can cross an export boundary without a visual jump."
+          },
+          {
+            "key": "accent",
+            "label": "Accent",
+            "type": "color",
+            "scope": "template",
+            "default": "#61e68d"
+          },
+          {
+            "key": "photo",
+            "label": "Shared image",
+            "type": "image",
+            "scope": "template"
+          }
+        ],
+        "elements": [
+          {
+            "id": "headline",
+            "label": "Headline",
+            "type": "text",
+            "allow": []
+          },
+          {
+            "id": "shared-photo",
+            "label": "Boundary-crossing image",
+            "type": "image",
+            "allow": []
+          }
+        ],
+        "export": {
+          "currentCanvas": true,
+          "separateImages": true,
+          "zip": true,
+          "formats": ["png", "jpeg", "webp"],
+          "defaultFormat": "png",
+          "scales": [1, 2, "custom"],
+          "defaultScale": 1,
+          "filenamePattern": "{index}-{name}",
+          "pdf": {
+            "enabled": true,
+            "pageSize": "canvas",
+            "orientation": "auto",
+            "quality": "screen",
+            "margins": 0,
+            "bleed": 0,
+            "includeBackground": true,
+            "filename": "continuous-carousel.pdf",
+            "title": "Continuous carousel starter"
+          }
+        }
+      }
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      #ib-canvas {
+        position: relative;
+        width: var(--ib-carousel-width, 4320px);
+        height: var(--ib-carousel-height, 1080px);
+        overflow: hidden;
+        color: #eef4ed;
+        background: linear-gradient(
+          90deg,
+          #111211 0 25%,
+          #18201b 25% 50%,
+          #101b17 50% 75%,
+          #111211 75% 100%
+        );
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .brand {
+        position: absolute;
+        top: 68px;
+        left: 72px;
+        z-index: 3;
+        color: var(--accent);
+        font-size: 24px;
+        letter-spacing: 0.12em;
+      }
+      h1 {
+        position: absolute;
+        top: 188px;
+        left: 72px;
+        z-index: 3;
+        width: 820px;
+        margin: 0;
+        font-size: 104px;
+        line-height: 0.95;
+        letter-spacing: -0.075em;
+      }
+      .shared-visual {
+        position: absolute;
+        top: 150px;
+        left: 880px;
+        width: 1450px;
+        height: 780px;
+        overflow: hidden;
+        border-radius: 390px;
+        background: linear-gradient(
+          135deg,
+          var(--accent),
+          #183629 62%,
+          #0b0d0c
+        );
+        transform: rotate(-8deg);
+      }
+      .shared-visual::after {
+        content: '';
+        position: absolute;
+        inset: 70px;
+        border: 2px solid rgb(255 255 255 / 38%);
+        border-radius: inherit;
+      }
+      .shared-visual img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        mix-blend-mode: luminosity;
+      }
+      .detail {
+        position: absolute;
+        top: 280px;
+        left: 2390px;
+        z-index: 3;
+        width: 690px;
+        margin: 0;
+        font-size: 58px;
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+      }
+      .finish {
+        position: absolute;
+        top: 180px;
+        left: 3380px;
+        width: 760px;
+      }
+      .finish strong {
+        display: block;
+        color: var(--accent);
+        font-size: 180px;
+        line-height: 1;
+        letter-spacing: -0.08em;
+      }
+      .finish span {
+        display: block;
+        margin-top: 30px;
+        font-size: 40px;
+        line-height: 1.2;
+      }
+      .numbers {
+        position: absolute;
+        right: 72px;
+        bottom: 62px;
+        color: #aeb8ad;
+        font-size: 22px;
+        letter-spacing: 0.08em;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="ib-canvas">
+      <strong class="brand" data-ib-text="brand"></strong>
+      <h1 data-ib-element="headline" data-ib-text="headline"></h1>
+      <div class="shared-visual" data-ib-element="shared-photo">
+        <img data-ib-image="photo" alt="" />
+      </div>
+      <p class="detail" data-ib-text="detail"></p>
+      <p class="finish">
+        <strong>04</strong
+        ><span>The exported pieces reconnect in the feed.</span>
+      </p>
+      <span class="numbers">01 — 04</span>
+    </main>
+    <script>
+      document.addEventListener('imagebuilder:state', ({ detail }) => {
+        document
+          .querySelector('#ib-canvas')
+          .style.setProperty(
+            '--accent',
+            String(detail.state.accent || '#61e68d'),
+          );
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script id="image-builder-manifest" type="application/json">
+  {
+    "version": 2,
+    "name": "Three-part story",
+    "description": "An editable three-canvas carousel with shared branding and ordered exports.",
+    "width": 1080,
+    "height": 1350,
+    "canvases": [
+      { "id": "cover", "name": "Cover", "state": { "eyebrow": "A practical guide", "title": "Make the useful thing clear.", "background": "#274033" }, "editable": ["background", "safeAreaGuides"] },
+      { "id": "feature", "name": "Feature", "state": { "eyebrow": "01 / Principle", "title": "Start with the outcome.", "background": "#202221" }, "editable": ["background", "safeAreaGuides"] },
+      { "id": "details", "name": "Details", "state": { "eyebrow": "02 / Practice", "title": "Remove everything that competes with it.", "background": "#111211" }, "editable": ["background", "safeAreaGuides"] }
+    ],
+    "canvasRules": {
+      "allowAdd": true,
+      "allowDelete": true,
+      "allowDuplicate": true,
+      "allowRename": true,
+      "allowReorder": true,
+      "min": 2,
+      "max": 12,
+      "sharedSize": true
+    },
+    "sharedStyles": { "showNumber": true },
+    "elements": [
+      { "id": "headline", "label": "Headline", "type": "text", "allow": ["move", "resize"] },
+      { "id": "marker", "label": "Page marker", "type": "shape", "allow": ["move", "resize", "rotate"] }
+    ],
+    "controls": [
+      { "key": "brand", "label": "Brand name", "type": "text", "scope": "template", "default": "IMAGE BUILDER" },
+      { "key": "accent", "label": "Accent", "type": "color", "scope": "template", "default": "#42c07e" },
+      { "key": "eyebrow", "label": "Eyebrow", "type": "text", "scope": "canvas" },
+      { "key": "title", "label": "Headline", "type": "text", "scope": "canvas" },
+      { "key": "headlineSize", "label": "Headline size", "type": "number", "scope": "element", "elementId": "headline", "default": 92, "min": 48, "max": 160, "step": 1 }
+    ],
+    "export": {
+      "currentCanvas": true,
+      "separateImages": true,
+      "zip": true,
+      "formats": ["png", "jpeg", "webp"],
+      "defaultFormat": "png",
+      "scales": [1, 2, "custom"],
+      "defaultScale": 1,
+      "filenamePattern": "{index}-{name}",
+      "pdf": {
+        "enabled": true,
+        "pageSize": "canvas",
+        "orientation": "auto",
+        "quality": "screen",
+        "margins": 0,
+        "bleed": 0,
+        "includeBackground": true,
+        "filename": "three-part-story.pdf",
+        "title": "Three-part story"
+      }
+    }
+  }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    #ib-canvas { position: relative; width: 1080px; height: 1350px; padding: 84px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; color: #cfdacd; background: #274033; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    #ib-canvas::before { content: ""; position: absolute; inset: -25%; opacity: .15; background: radial-gradient(circle, var(--accent) 0 5%, transparent 5.4%); background-size: 160px 160px; transform: translateX(calc(var(--canvas-index) * -53px)) rotate(-8deg); }
+    header, section, footer { position: relative; z-index: 1; }
+    header, footer { display: flex; justify-content: space-between; gap: 32px; font-size: 24px; letter-spacing: .08em; }
+    .eyebrow { color: var(--accent); }
+    h1 { max-width: 9ch; margin: 0; font-size: var(--headline-size); line-height: .98; letter-spacing: -.07em; }
+    .marker { width: 96px; height: 12px; margin-bottom: 40px; background: var(--accent); }
+  </style>
+</head>
+<body>
+  <main id="ib-canvas">
+    <header><strong data-ib-text="brand"></strong><span class="eyebrow" data-ib-text="eyebrow"></span></header>
+    <section><div class="marker" data-ib-element="marker"></div><h1 data-ib-element="headline" data-ib-text="title"></h1></section>
+    <footer><span>←</span><span id="page-number"></span><span>→</span></footer>
+  </main>
+  <script>
+    document.addEventListener('imagebuilder:state', ({ detail }) => {
+      const { state, context } = detail;
+      const canvas = document.querySelector('#ib-canvas');
+      canvas.style.setProperty('--accent', String(state.accent || '#42c07e'));
+      canvas.style.setProperty('--headline-size', `${Number(state.headlineSize) || 92}px`);
+      canvas.style.setProperty('--canvas-index', String(context.canvas?.index || 0));
+      document.querySelector('#page-number').textContent = `${String((context.canvas?.index || 0) + 1).padStart(2, '0')} / ${String(context.canvas?.count || 1).padStart(2, '0')}`;
+    });
+  </script>
+</body>
+</html>

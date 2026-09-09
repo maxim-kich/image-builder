@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script id="image-builder-manifest" type="application/json">
+  {
+    "name": "Basic statement",
+    "description": "A small example template with editable text and tone.",
+    "width": 1080,
+    "height": 1080,
+    "controls": [
+      { "key": "title", "label": "Statement", "type": "text", "default": "Make the useful thing clear." },
+      { "key": "tone", "label": "Tone", "type": "select", "default": "#274033", "options": [
+        { "label": "Green", "value": "#274033" },
+        { "label": "Graphite", "value": "#202221" },
+        { "label": "Paper", "value": "#CFDACD" }
+      ] }
+    ]
+  }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    #ib-canvas { width: 1080px; height: 1080px; padding: 80px; display: flex; align-items: flex-end; background: #274033; color: #cfdacd; font: 600 80px/1.08 ui-monospace, monospace; }
+    h1 { margin: 0; max-width: 11ch; letter-spacing: -.06em; }
+  </style>
+</head>
+<body>
+  <main id="ib-canvas"><h1 data-ib-text="title"></h1></main>
+  <script>
+    document.addEventListener('imagebuilder:state', ({ detail }) => {
+      document.querySelector('#ib-canvas').style.background = String(detail.state.tone || '#274033');
+    });
+  </script>
+</body>
+</html>

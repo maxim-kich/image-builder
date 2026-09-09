@@ -1,0 +1,25 @@
+services:
+  image-builder:
+    build: .
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=512m,mode=1777
+    shm_size: 128m
+    pids_limit: 256
+    ports:
+      - "127.0.0.1:${IMAGE_BUILDER_PORT:-5180}:8080"
+    environment:
+      IMAGE_BUILDER_API_TOKEN: "${IMAGE_BUILDER_API_TOKEN:?Set IMAGE_BUILDER_API_TOKEN in .env}"
+      IMAGE_BUILDER_PUBLIC_URL: "${IMAGE_BUILDER_PUBLIC_URL:-http://localhost:5180}"
+      DATABASE_URL: "sqlite:/app/data/image-builder.sqlite"
+    volumes:
+      - image_builder_data:/app/data
+
+volumes:
+  image_builder_data:

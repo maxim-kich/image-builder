@@ -32,10 +32,10 @@ describe('REST API', () => {
     await app.close();
     const html = await readFile('examples/templates/basic-card.html', 'utf8');
     const storage = createStorage('sqlite::memory:'); await storage.init([{ id: 'basic-card', html, manifest: parseTemplateManifest(html) }]);
-    const config: AppConfig = { host: '127.0.0.1', port: 5180, publicUrl: 'http://127.0.0.1:5180', databaseUrl: 'sqlite::memory:', apiToken: 'long-test-token', isProduction: false };
+    const config: AppConfig = { host: '127.0.0.1', port: 5180, publicUrl: 'http://127.0.0.1:5180', databaseUrl: 'sqlite::memory:', apiToken: 'sixsix', isProduction: false };
     app = await buildApp({ config, storage, serveFrontend: false, logger: false });
     expect((await app.inject({ method: 'GET', url: '/api/v1/templates' })).statusCode).toBe(401);
-    expect((await app.inject({ method: 'GET', url: '/api/v1/templates', headers: { authorization: 'Bearer long-test-token' } })).statusCode).toBe(200);
+    expect((await app.inject({ method: 'GET', url: '/api/v1/templates', headers: { authorization: 'Bearer sixsix' } })).statusCode).toBe(200);
   });
 
   it('downloads and deletes an unused template', async () => {

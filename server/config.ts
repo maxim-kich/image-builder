@@ -1,5 +1,7 @@
 import { resolve } from 'node:path';
 
+const MIN_API_TOKEN_LENGTH = 6;
+
 export interface AppConfig {
   host: string;
   port: number;
@@ -17,7 +19,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const publicUrl = (env.IMAGE_BUILDER_PUBLIC_URL ?? `http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`).replace(/\/$/, '');
   const apiToken = env.IMAGE_BUILDER_API_TOKEN?.trim() || undefined;
   if (isProduction && !apiToken) throw new Error('IMAGE_BUILDER_API_TOKEN is required in production.');
-  if (apiToken && apiToken.length < 12) throw new Error('IMAGE_BUILDER_API_TOKEN must contain at least 12 characters.');
+  if (apiToken && apiToken.length < MIN_API_TOKEN_LENGTH) throw new Error(`IMAGE_BUILDER_API_TOKEN must contain at least ${MIN_API_TOKEN_LENGTH} characters.`);
   const localPublicUrl = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(publicUrl);
   if (isProduction && !publicUrl.startsWith('https://') && !localPublicUrl) throw new Error('IMAGE_BUILDER_PUBLIC_URL must use HTTPS in production unless it is localhost.');
   return {

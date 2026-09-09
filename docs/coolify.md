@@ -17,7 +17,7 @@ The Git and Docker ignore files exclude local data, exports, credentials, retire
    | Variable | Value |
    | --- | --- |
    | `IMAGE_BUILDER_PUBLIC_URL` | Public HTTPS origin, such as `https://images.example.com` |
-   | `IMAGE_BUILDER_API_TOKEN` | A random token generated privately; use at least 32 random bytes |
+   | `IMAGE_BUILDER_API_TOKEN` | Your private access token (minimum 6 characters; longer random tokens recommended) |
    | `POSTGRES_PASSWORD` | A different random password; hexadecimal avoids URL-encoding issues |
 
 4. Assign the HTTPS domain to `image-builder`, routing to container port `8080`. Point the domain's DNS at your server. Do not expose PostgreSQL publicly.
